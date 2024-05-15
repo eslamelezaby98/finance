@@ -34,5 +34,10 @@ namespace api.controller
                 return Ok(stock);
             }
         }
+
+        // [HttpPost("add")]
+        // public IActionResult AddStock([FromBody] Stock stock){
+        //     _context.Stocks.Add(stock);
+        // }
     }
 }
