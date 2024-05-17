@@ -1,4 +1,6 @@
 using api.data;
+using api.interfaces;
+using api.Repositiory;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +14,9 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ApplicationDbContext>(option=> {
     option.UseSqlServer(builder.Configuration.GetConnectionString("DbConnectionString"));
 });
+
+// DI and repositiory pattern
+builder.Services.AddScoped<IStockRepo,StockRepo>();
 
 var app = builder.Build();
 
