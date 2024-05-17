@@ -20,5 +20,17 @@ namespace api.mapper
                 StockId = commentModel.StockId
             };
         }
+
+        public static Comment ToCommentFromCreate(this CreateCommentDto createComment, int stockId)
+        {
+            return new Comment
+            {
+                Title = createComment.Title,
+                Content = createComment.Content,
+                StockId = stockId,
+            };
+        }
+
+
     }
 }

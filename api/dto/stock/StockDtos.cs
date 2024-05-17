@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using api.dto.comment;
+using api.model;
 
 namespace api.dto.stock
 {
@@ -14,5 +16,6 @@ namespace api.dto.stock
         public decimal LastDiv { get; set; }
         public string Industry { get; set; } = "";
         public long MarketCap { get; set; }
+        public List<CommentsDto> Comments { get; set; } = [];
     }
 }

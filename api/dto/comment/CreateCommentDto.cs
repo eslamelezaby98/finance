@@ -5,12 +5,10 @@ using System.Threading.Tasks;
 
 namespace api.dto.comment
 {
-    public class CommentsDto
+    public class CreateCommentDto
     {
-        public int Id { get; set; }
         public string Title { get; set; } = "";
         public string Content { get; set; } = "";
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
-        public int? StockId { get; set; }
+
     }
 }

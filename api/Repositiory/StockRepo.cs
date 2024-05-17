@@ -16,7 +16,7 @@ namespace api.Repositiory
 
         public async Task<List<Stock>> GetAllStock()
         {
-            return await _context.Stocks.ToListAsync();
+            return await _context.Stocks.Include(e => e.Comments).ToListAsync();
 
         }
 
@@ -47,7 +47,7 @@ namespace api.Repositiory
 
         public async Task<Stock?> GetStockById(int id)
         {
-            var stock = await _context.Stocks.FindAsync(id);
+            var stock = await _context.Stocks.Include(e => e.Comments).FirstOrDefaultAsync(e => e.Id == id);
             if (stock == null)
             {
                 return null;
@@ -77,6 +77,11 @@ namespace api.Repositiory
                 return stock;
             }
 
+        }
+
+        public async Task<bool> IsStockExits(int id)
+        {
+            return await _context.Stocks.AnyAsync(e => e.Id == id);
         }
     }
 }

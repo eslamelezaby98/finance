@@ -20,6 +20,7 @@ namespace api.mapper
                 Symbol = stock.Symbol,
                 Purchase = stock.Purchase,
                 MarketCap = stock.MarketCap,
+                Comments = stock.Comments.Select(e => e.ToCommentDto()).ToList(),
             };
         }
 
