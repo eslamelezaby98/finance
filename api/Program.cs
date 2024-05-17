@@ -11,12 +11,15 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<ApplicationDbContext>(option=> {
+builder.Services.AddDbContext<ApplicationDbContext>(option =>
+{
     option.UseSqlServer(builder.Configuration.GetConnectionString("DbConnectionString"));
 });
 
 // DI and repositiory pattern
-builder.Services.AddScoped<IStockRepo,StockRepo>();
+builder.Services.AddScoped<IStockRepo, StockRepo>();
+builder.Services.AddScoped<ICommentRepo, CommentRepo>();
+
 
 var app = builder.Build();
 
@@ -36,7 +39,7 @@ var summaries = new[]
 
 app.MapGet("/weatherforecast", () =>
 {
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
+    var forecast = Enumerable.Range(1, 5).Select(index =>
         new WeatherForecast
         (
             DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
