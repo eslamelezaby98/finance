@@ -57,5 +57,21 @@ namespace api.Controller
             }
         }
 
+        [HttpPut]
+        [Route("{commentId}")]
+        public async Task<IActionResult> Update([FromRoute] int commentId, UpdateCommentDto updateCommentDto)
+        {
+            if (!await _commnetRepo.IsCommentExits(commentId))
+            {
+                return BadRequest("Comment is not found");
+            }
+            else
+            {
+                var commentModel = updateCommentDto.ToCommentFromUpdate();
+                await _commnetRepo.Update(commentId, updateCommentDto);
+                return Ok(commentModel.ToCommentDto());
+            }
+        }
+
     }
 }

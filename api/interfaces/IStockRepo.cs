@@ -16,7 +16,5 @@ namespace api.interfaces
         Task<Stock?> DeleteStock(int id);
         Task<bool> IsStockExits(int id);
 
-
-
     }
 }
