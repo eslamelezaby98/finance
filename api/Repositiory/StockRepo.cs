@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using api.data;
 using api.dto.stock;
+using api.helpers;
 using api.interfaces;
 using api.model;
 using Microsoft.EntityFrameworkCore;
@@ -14,9 +15,27 @@ namespace api.Repositiory
     {
         private readonly ApplicationDbContext _context = context;
 
-        public async Task<List<Stock>> GetAllStock()
+        public async Task<List<Stock>> GetAllStock(QueryObject query)
         {
-            return await _context.Stocks.Include(e => e.Comments).ToListAsync();
+            var stocks = _context.Stocks.Include(e => e.Comments).AsQueryable();
+            if (!string.IsNullOrWhiteSpace(query.Symbol))
+            {
+                stocks = stocks.Where(e => e.Symbol.Contains(query.Symbol));
+            }
+
+            if (!string.IsNullOrEmpty(query.CompanyName))
+            {
+                stocks = stocks.Where(e => e.ComapnyName.Contains(query.CompanyName));
+            }
+
+            if (!string.IsNullOrWhiteSpace(query.SortBy))
+            {
+                if (query.SortBy.Equals("Symbol",StringComparison.OrdinalIgnoreCase))
+                {
+                    stocks = query.IsDecsending ? stocks.OrderByDescending(s => s.Symbol) : stocks.OrderBy(e => e.Symbol);
+                }
+            }
+            return await stocks.ToListAsync();
 
         }
 
