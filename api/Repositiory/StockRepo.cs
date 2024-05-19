@@ -27,15 +27,19 @@ namespace api.Repositiory
             {
                 stocks = stocks.Where(e => e.ComapnyName.Contains(query.CompanyName));
             }
-
+            
+            //* sort
             if (!string.IsNullOrWhiteSpace(query.SortBy))
             {
-                if (query.SortBy.Equals("Symbol",StringComparison.OrdinalIgnoreCase))
+                if (query.SortBy.Equals("Symbol", StringComparison.OrdinalIgnoreCase))
                 {
                     stocks = query.IsDecsending ? stocks.OrderByDescending(s => s.Symbol) : stocks.OrderBy(e => e.Symbol);
                 }
             }
-            return await stocks.ToListAsync();
+            
+            //* pagination
+            var skipNumber = (query.PageNumber - 1) * query.PageSize;
+            return await stocks.Skip(skipNumber).Take(query.PageSize).ToListAsync();
 
         }
 
