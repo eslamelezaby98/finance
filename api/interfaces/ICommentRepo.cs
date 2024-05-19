@@ -15,8 +15,9 @@ namespace api.interfaces
 
         Task<Comment> Create(Comment comment);
         Task<Comment?> Update(int id, UpdateCommentDto updateCommentDto);
-
         Task<bool> IsCommentExits(int id);
+        Task<Comment?> Delete(int id);
+
 
     }
 }

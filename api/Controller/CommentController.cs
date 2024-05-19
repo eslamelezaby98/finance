@@ -28,7 +28,7 @@ namespace api.Controller
         }
 
         [HttpGet]
-        [Route("{id}")]
+        [Route("{id:int}")]
         public async Task<IActionResult> GetById(int id)
         {
             Comment? comment = await _commnetRepo.GetById(id);
@@ -42,9 +42,12 @@ namespace api.Controller
             }
         }
 
-        [HttpPost("{stockId}")]
+        [HttpPost("{stockId:int}")]
         public async Task<IActionResult> Create([FromRoute] int stockId, CreateCommentDto createComment)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             if (!await _stockRepo.IsStockExits(stockId))
             {
                 return BadRequest("Stock is not found");
@@ -58,9 +61,12 @@ namespace api.Controller
         }
 
         [HttpPut]
-        [Route("{commentId}")]
+        [Route("{commentId:int}")]
         public async Task<IActionResult> Update([FromRoute] int commentId, UpdateCommentDto updateCommentDto)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             if (!await _commnetRepo.IsCommentExits(commentId))
             {
                 return BadRequest("Comment is not found");
@@ -70,6 +76,25 @@ namespace api.Controller
                 var commentModel = updateCommentDto.ToCommentFromUpdate();
                 await _commnetRepo.Update(commentId, updateCommentDto);
                 return Ok(commentModel.ToCommentDto());
+            }
+        }
+
+        [HttpDelete]
+        [Route("{id:int}")]
+        public async Task<IActionResult> Delete([FromRoute] int id)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var commnet = await _commnetRepo.Delete(id);
+
+            if (commnet == null)
+            {
+                return NotFound("Comment is not found");
+            }
+            else
+            {
+                return NoContent();
             }
         }
 

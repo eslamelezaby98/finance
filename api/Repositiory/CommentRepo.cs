@@ -22,6 +22,21 @@ namespace api.Repositiory
             return comment;
         }
 
+        public async Task<Comment?> Delete(int id)
+        {
+            var commnet = await _context.Comments.FirstOrDefaultAsync(e => e.Id == id);
+            if (commnet == null)
+            {
+                return null;
+            }
+            else
+            {
+                _context.Comments.Remove(commnet);
+                await _context.SaveChangesAsync();
+                return commnet;
+            }
+        }
+
         public async Task<List<Comment>> GetAll()
         {
             return await _context.Comments.ToListAsync();
